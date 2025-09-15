@@ -1,5 +1,9 @@
 # Cordova Permit iOS getUserMedia Plugin
 
+[![Test](https://github.com/mieweb/cordova-plugin-ios-permit-getusermedia/actions/workflows/test.yml/badge.svg)](https://github.com/mieweb/cordova-plugin-ios-permit-getusermedia/actions/workflows/test.yml)
+[![Release](https://github.com/mieweb/cordova-plugin-ios-permit-getusermedia/actions/workflows/release.yml/badge.svg)](https://github.com/mieweb/cordova-plugin-ios-permit-getusermedia/actions/workflows/release.yml)
+[![npm version](https://badge.fury.io/js/@tokenized%2Fcordova-plugin-ios-permit-getusermedia.svg)](https://badge.fury.io/js/@tokenized%2Fcordova-plugin-ios-permit-getusermedia)
+
 A Cordova plugin allowing the embedded web app (loaded from a file inside the
 app bundle) to call
 [`navigator.mediaDevices.getUserMedia`](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia)
@@ -8,6 +12,26 @@ iOS permission dialog every time.
 
 The plugin does nothing on Android, has no JavaScript interface, and no
 configuration options.
+
+## Installation
+
+### Via npm
+
+```bash
+npm install @tokenized/cordova-plugin-ios-permit-getusermedia
+```
+
+### Via Cordova CLI
+
+```bash
+cordova plugin add @tokenized/cordova-plugin-ios-permit-getusermedia
+```
+
+### Via config.xml
+
+```xml
+<plugin name="@tokenized/cordova-plugin-ios-permit-getusermedia" spec="^1.0.0" />
+```
 
 ## Requirements
 
@@ -49,3 +73,28 @@ something like this:
 ## License
 
 The project is MIT licensed: [MIT](https://opensource.org/licenses/MIT).
+
+## Development
+
+### Testing
+
+```bash
+npm test
+```
+
+### Formatting
+
+```bash
+npm run format
+```
+
+### Publishing
+
+The plugin is automatically published to npm when a new tag is pushed:
+
+```bash
+npm version patch  # or minor/major
+git push && git push --tags
+```
+
+Or manually trigger a release via GitHub Actions workflow.

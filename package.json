@@ -2,6 +2,20 @@
   "name": "@tokenized/cordova-plugin-ios-permit-getusermedia",
   "version": "1.0.0",
   "description": "Cordova plugin allowing getUserMedia camera view without triggering a permission dialog every time",
+  "main": "plugin.xml",
+  "scripts": {
+    "test": "npm run lint && npm run validate && npm run check-xml && npm run test-install",
+    "lint": "prettier --check \"**/*.{js,json,md}\"",
+    "format": "prettier --write \"**/*.{js,json,md}\"",
+    "validate": "node -e \"require('./package.json'); console.log('package.json is valid')\"",
+    "check-xml": "node -e \"const fs=require('fs'); const xml=fs.readFileSync('plugin.xml','utf8'); if(!xml.includes('<plugin')) throw new Error('Invalid plugin.xml'); console.log('plugin.xml is valid')\"",
+    "test-install": "node test-install.js",
+    "build": "npm run format && npm run test",
+    "prepare": "npm run format",
+    "preversion": "npm run test",
+    "version": "npm run format && git add -A",
+    "postversion": "git push && git push --tags"
+  },
   "cordova": {
     "id": "@tokenized/cordova-plugin-ios-permit-getusermedia",
     "platforms": [
@@ -23,6 +37,15 @@
   ],
   "license": "MIT",
   "homepage": "https://github.com/tokenized/cordova-plugin-ios-permit-getusermedia#readme",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "files": [
+    "plugin.xml",
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
   "devDependencies": {
     "prettier": "^2.7.1"
   }

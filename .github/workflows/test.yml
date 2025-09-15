@@ -1,0 +1,81 @@
+name: Test
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 20.x]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run linting
+        run: npm run lint
+        
+      - name: Validate package.json
+        run: npm run validate
+        
+      - name: Check plugin.xml format
+        run: npm run check-xml
+
+  validate-plugin:
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Install Cordova CLI
+        run: npm install -g cordova@latest
+        
+      - name: Create test Cordova project
+        run: |
+          cordova create test-app com.test.app TestApp
+          cd test-app
+          cordova platform add ios
+          
+      - name: Add plugin to test project
+        run: |
+          cd test-app
+          cordova plugin add ..
+          
+      - name: Validate plugin installation
+        run: |
+          cd test-app
+          cordova plugin list | grep cordova-plugin-ios-permit-getusermedia
+          
+      - name: Build iOS project (if on macOS with Xcode available)
+        run: |
+          cd test-app
+          if command -v xcodebuild &> /dev/null; then
+            cordova build ios
+          else
+            echo "Xcode not available, skipping iOS build"
+          fi
